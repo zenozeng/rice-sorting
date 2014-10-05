@@ -209,6 +209,36 @@ var filter = function(rects) {
 rgb(140, 159, 174)
 rgb(154, 163, 170)
 
+```javascript
+(function() {
+    var isBackground = function(r, g, b) {
+        return b > 240;
+    };
+    tracking.ColorTracker.registerColor('black-dots', function(r, g, b) {
+        if(isBackground(r, g, b)) {
+            return false;
+        }
+        var dr = r - 224,
+            dg = g - 235,
+            db = b - 240;
+        var d = Math.pow(dr, 2) + Math.pow(dg, 2) + Math.pow(db, 2);
+        if(d > 100) {
+            return true;
+        }
+        return false;
+    });
+    var tracker = new tracking.ColorTracker(['black-dots']);
+    tracker.on('track', function(event) {
+        event.data.forEach(function(rect) {
+            plot(rect.x, rect.y, rect.width, rect.height, 'black');
+        });
+    });
+    tracking.track('#img', tracker);
+})();
+```
+
+![07](processing/7.jpg)
+
 
 ## 拓展
 
