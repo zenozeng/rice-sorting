@@ -152,7 +152,20 @@ var RiceTracker = function() {
 tracking.inherits(RiceTracker, tracking.Tracker);
 ```
 
-![02](processing/3.jpg)
+![03](processing/3.jpg)
+
+过滤半颗大米的情况
+
+```javascript
+var filter = function(rects) {
+    return rects.filter(function(rect) {
+        console.log(rect);
+        return rect.rateStart > 0.7 && rect.rateEnd > 0.7;
+    });
+};
+```
+
+![04](processing/4.jpg)
 
 ## 拓展
 
