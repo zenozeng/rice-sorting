@@ -1,6 +1,6 @@
-# grain-sorting
+# rice-sorting
 
-Grain sorting based on machine vision
+Rice sorting based on machine vision
 
 ## Screenshot
 
