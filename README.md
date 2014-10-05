@@ -152,7 +152,7 @@ var RiceTracker = function() {
 tracking.inherits(RiceTracker, tracking.Tracker);
 ```
 
-![02](processing/2.jpg)
+![02](processing/3.jpg)
 
 ## 拓展
 
