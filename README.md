@@ -38,6 +38,23 @@ else
 蓝色是一个相对安全的颜色，
 同时很容易和大米进行区分。
 
+### 定位大米
+
+这里我们简单的地使用 r, g, b 均大于 120 作为大米识别的标志。
+扫一遍图片，
+然后可以得到一个矩形区域。
+
+```javascript
+tracking.ColorTracker.registerColor('rice', function(r, g, b) {
+    if (r > 120 && g > 120 && b > 120) {
+        return true;
+    }
+    return false;
+});
+
+var tracker = new tracking.ColorTracker(['rice']);
+```
+
 ## 拓展
 
 ### 更多的分级
@@ -57,6 +74,12 @@ else
 ## 可能碰到的一些问题
 
 - 大米的边缘检测及其分离
+
+## Pics
+
+Remix based on IRRI's 1!_8500, which is licensed under cc-by-nc-sa 2.0.
+
+See also: https://www.flickr.com/photos/ricephotos/382219911/in/photostream/
 
 ## Ref
 
