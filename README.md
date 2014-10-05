@@ -1,6 +1,8 @@
 # rice-sorting
 
-Rice sorting based on machine vision
+Rice sorting based on machine vision.
+
+这是一个概念验证的 repo，不是具体实现哦。
 
 ## 简介
 
@@ -10,9 +12,11 @@ Rice sorting based on machine vision
 轨道被摆成一个适宜的角度，
 使得绝大多数大米的阻力和重力分力抵消。
 
-左侧有个高速摄像头
-
 ![02](screenshot2.png)
+
+左侧有个高速摄像头，
+连接一个树莓派或者服务器。
+利用机器视觉进行判定。
 
 ```coffeescript
 if 当前大米 is 劣质大米
@@ -21,6 +25,8 @@ if 当前大米 is 劣质大米
 else
     沿着当前轨道继续前进到下一环节。
 ```
+
+## 机器视觉
 
 ## 拓展
 
