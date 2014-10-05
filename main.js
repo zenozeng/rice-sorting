@@ -1,12 +1,4 @@
-tracking.ColorTracker.registerColor('rice', function(r, g, b) {
-    var brightness = 190; 
-    if (r > brightness && g > brightness && b > brightness) {
-        return true;
-    }
-    return false;
-});
-
-var tracker = new tracking.ColorTracker(['rice']);
+var tracker = new RiceTracker();
 
 window.onload = function() {
     var img = document.getElementById('img');

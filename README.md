@@ -68,6 +68,8 @@ var tracker = new tracking.ColorTracker(['rice']);
 
 ![02](processing/2.jpg)
 
+### 基于位置与颜色大米定位
+
 ## 拓展
 
 ### 更多的分级
@@ -97,3 +99,5 @@ See also: https://www.flickr.com/photos/ricephotos/382219911/in/photostream/
 ## Ref
 
 - [A modern approach for Computer Vision on the web](http://trackingjs.com/)
+
+- [Flood fill](http://zh.wikipedia.org/wiki/Flood_fill)
