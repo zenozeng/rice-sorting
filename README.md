@@ -3,6 +3,10 @@
 Rice sorting based on machine vision.
 
 这是一个概念验证的 repo，不是具体实现哦。
+为了方便演示，
+我们这里用 tracking.js 这个库来操作，
+实际的话，
+可以考虑用 opencv 来替代掉以换取更高性能。
 
 ## 简介
 
@@ -42,11 +46,12 @@ else
 
 这里我们简单的地使用 r, g, b 均大于 120 作为大米识别的标志。
 扫一遍图片，
-然后可以得到一个矩形区域。
+然后可以得到一些基本的矩形区域。
 
 ```javascript
 tracking.ColorTracker.registerColor('rice', function(r, g, b) {
-    if (r > 120 && g > 120 && b > 120) {
+    var brightness = 120; 
+    if (r > brightness && g > brightness && b > brightness) {
         return true;
     }
     return false;
@@ -54,6 +59,8 @@ tracking.ColorTracker.registerColor('rice', function(r, g, b) {
 
 var tracker = new tracking.ColorTracker(['rice']);
 ```
+
+![01](processing/1.jpg)
 
 ## 拓展
 

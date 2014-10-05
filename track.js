@@ -1,5 +1,6 @@
 tracking.ColorTracker.registerColor('rice', function(r, g, b) {
-    if (r > 120 && g > 120 && b > 120) {
+    var brightness = 120; 
+    if (r > brightness && g > brightness && b > brightness) {
         return true;
     }
     return false;
