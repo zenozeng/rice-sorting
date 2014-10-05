@@ -197,6 +197,11 @@ var filter = function(rects) {
 
 ![05](processing/5.jpg)
 
+#### 黑点识别
+
+![06.0](processing/6.0.jpg)
+![06](processing/6.jpg)
+
 
 ## 拓展
 

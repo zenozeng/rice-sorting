@@ -48,4 +48,22 @@ window.onload = function() {
         });
         tracking.track('#img', tracker);
     })();
+
+    // 黑点检测
+    (function() {
+        tracking.ColorTracker.registerColor('black-dots', function(r, g, b) {
+            if((r + g + b) < 300 ) {
+                return true;
+            }
+            return false;
+        });
+        var tracker = new tracking.ColorTracker(['black-dots']);
+        tracker.on('track', function(event) {
+            event.data.forEach(function(rect) {
+                plot(rect.x, rect.y, rect.width, rect.height, 'black');
+            });
+        });
+        tracking.track('#img', tracker);
+    })();
+
 };

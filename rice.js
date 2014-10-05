@@ -68,11 +68,9 @@ var RiceTracker = function() {
         // 过滤半颗大米的情况
         var filter = function(rects) {
             return rects.filter(function(rect) {
-                console.log(rect);
                 return rect.rateStart > 0.7 && rect.rateEnd > 0.7;
             });
         };
-
 
         var tracker = new tracking.ColorTracker(['rice']);
         tracker.on('track', function(event) {
