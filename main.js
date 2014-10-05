@@ -1,6 +1,3 @@
-
-
-
 window.onload = function() {
     var img = document.getElementById('img');
 
@@ -51,8 +48,18 @@ window.onload = function() {
 
     // 黑点检测
     (function() {
+        var isBackground = function(r, g, b) {
+            return b > 240;
+        };
         tracking.ColorTracker.registerColor('black-dots', function(r, g, b) {
-            if((r + g + b) < 300 ) {
+            if(isBackground(r, g, b)) {
+                return false;
+            }
+            var dr = r - 224,
+                dg = g - 235,
+                db = b - 240;
+            var d = Math.pow(dr, 2) + Math.pow(dg, 2) + Math.pow(db, 2);
+            if(d > 100) {
                 return true;
             }
             return false;
