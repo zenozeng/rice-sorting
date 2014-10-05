@@ -167,7 +167,45 @@ var filter = function(rects) {
 
 ![04](processing/4.jpg)
 
+### 大米质量判定
+
+#### 偏黄大米识别
+
+```javascript
+(function() {
+    tracking.ColorTracker.registerColor('yellow-rice', function(r, g, b) {
+        var brightness = 120;
+        if (!(r > brightness && g > brightness && b > brightness)) {
+            return false; // isn't rice!
+        }
+        if(r > b && g > b) {
+            // FIXME: 这里的判定有点简单了
+            //        不过可以暂时作为 workround, 具体需要查一下相关公式
+            return true; // 色彩偏黄
+        }
+        return false;
+    });
+    var tracker = new tracking.ColorTracker(['yellow-rice']);
+    tracker.on('track', function(event) {
+        event.data.forEach(function(rect) {
+            plot(rect.x, rect.y, rect.width, rect.height, 'yellow');
+        });
+    });
+    tracking.track('#img', tracker);
+})();
+```
+
+![05](processing/5.jpg)
+
+
 ## 拓展
+
+### 特判
+
+这里有很多东西可能是一些特判，
+实际使用的时候，
+会有很多问题，
+还是需要拿数据训练一下。
 
 ### 更多的分级
 
