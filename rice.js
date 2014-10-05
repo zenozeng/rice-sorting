@@ -22,9 +22,9 @@ var RiceTracker = function() {
 
         // 基于非背景色判定的横向切割
         var cut = function(rects) {
+
             var results = [];
             rects.forEach(function(rect) {
-                console.log(rect);
                 // 计算每一列背景所占比例
                 var rates = [];
                 for(var i = rect.x; i < rect.width + rect.x; i++) {
@@ -45,11 +45,11 @@ var RiceTracker = function() {
                 // TODO: 如果背景占比波动厉害，可以用模拟退火优化这里
                 var mark = 0;
                 for(var i = 1; i < rates.length; i++) {
-                    if((i > 0) &&
-                       (rates[i] > 0.7) && // 背景占比要大于 70%
-                       (rates[i] >= rates[i - 1]) && // 要大于等于前项
-                       ((rates[i] > rates[i + 1]) ||
-                        (i == (rates.length - 1)))) {
+                    if((i == (rates.length - 1)) || // 这是最后一项了
+                       ((rates[i] > 0.7) && // 背景占比要大于 70%
+                        (i > mark + 20) && // 长度要大于 20px，用于简单地降低波动造成的影响
+                        ((rates[i] >= rates[i - 1]) && (rates[i] >= rates[i + 1]))))
+                    {
                         results.push({
                             x: mark + rect.x,
                             y: rect.y,

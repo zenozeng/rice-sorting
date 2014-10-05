@@ -42,7 +42,7 @@ else
 蓝色是一个相对安全的颜色，
 同时很容易和大米进行区分。
 
-### 基于颜色的大米定位
+### 大米定位
 
 这里我们简单的地使用 r, g, b 均大于 120 作为大米识别的标志。
 扫一遍图片，
@@ -64,11 +64,95 @@ var tracker = new tracking.ColorTracker(['rice']);
 
 问题很明显，我们不能正确的分离大米，
 如果调大亮度控制的话，
-则会引入大米区域选择不全的问题。
+则会引入大米区域选择不全以及大米临界判断错误的问题。
 
 ![02](processing/2.jpg)
 
-### 基于位置与颜色大米定位
+所以我们拿到下面图这个之后再去寻找两个大米之间的交接处去切断。
+直接找蓝色占比的极值点就好。
+
+![01](processing/1.jpg)
+
+```javascript
+// Rice Tracker on blue background
+// Based on ColorTracker
+
+var RiceTracker = function() {
+    RiceTracker.prototype.track = function(pixels, width, height) {
+
+        var self = this;
+
+        // 基于颜色的基本定位
+        tracking.ColorTracker.registerColor('rice', function(r, g, b) {
+            var brightness = 120;
+            if (r > brightness && g > brightness && b > brightness) {
+                return true;
+            }
+            return false;
+        });
+
+        // Detect if it's blue background
+        var isBackground = function(r, g, b) {
+            return (b > r) && (b > g) && (r < 180) && (g < 180);
+        };
+
+        // 基于非背景色判定的横向切割
+        var cut = function(rects) {
+
+            var results = [];
+            rects.forEach(function(rect) {
+                // 计算每一列背景所占比例
+                var rates = [];
+                for(var i = rect.x; i < rect.width + rect.x; i++) {
+                    var count = 0;
+                    for(var j = rect.y; j < rect.height + rect.y; j++) {
+                        var n = (j * width + i) * 4,
+                            r = pixels[n],
+                            g = pixels[n+1],
+                            b = pixels[n+2];
+                        if(isBackground(r, g, b)) {
+                            count++;
+                        }
+                    }
+                    var rate = count / rect.height;
+                    rates.push(rate);
+                }
+                // 以极大值作为切割点，切割矩形
+                // TODO: 如果背景占比波动厉害，可以用模拟退火优化这里
+                var mark = 0;
+                for(var i = 1; i < rates.length; i++) {
+                    if((i == (rates.length - 1)) || // 这是最后一项了
+                       ((rates[i] > 0.7) && // 背景占比要大于 70%
+                        (i > mark + 20) && // 长度要大于 20px，用于简单地降低波动造成的影响
+                        ((rates[i] >= rates[i - 1]) && (rates[i] >= rates[i + 1]))))
+                    {
+                        results.push({
+                            x: mark + rect.x,
+                            y: rect.y,
+                            width: i - mark,
+                            height: rect.height
+                        });
+                        mark = i;
+                    }
+                }
+            });
+            return results;
+        };
+
+        var tracker = new tracking.ColorTracker(['rice']);
+        tracker.on('track', function(event) {
+            var rects = event.data;
+            rects = cut(rects);
+            self.emit('track', {data: rects});
+        });
+        tracker.track(pixels, width, height);
+    };
+};
+
+tracking.inherits(RiceTracker, tracking.Tracker);
+```
+
+![02](processing/2.jpg)
 
 ## 拓展
 
@@ -85,10 +169,6 @@ var tracker = new tracking.ColorTracker(['rice']);
 可以考虑并行多条轨道，
 然后一个摄像头同时拍摄多轨，
 然后分割后交给计算机处理。
-
-## 可能碰到的一些问题
-
-- 大米的边缘检测及其分离
 
 ## Pics
 
